@@ -1,0 +1,42 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 data-table">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+  
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> No. </th>
+      <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="manufacturer">
+      <th mat-header-cell *matHeaderCellDef> Manufacturer </th>
+      <td mat-cell *matCellDef="let element"> {{element.manufacturer_name}} </td>
+    </ng-container>
+  
+    <!-- Weight Column -->
+    <ng-container matColumnDef="model">
+      <th mat-header-cell *matHeaderCellDef> Model </th>
+      <td mat-cell *matCellDef="let element"> {{element.model_name}} </td>
+    </ng-container>
+  
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="count">
+      <th mat-header-cell *matHeaderCellDef> Count </th>
+      <td mat-cell *matCellDef="let element"> {{element.count}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td *matCellDef="let element; let i = index" >
+             <button mat-raised-button (click)="sellOneCar(i,$event)">Sold</button> 
+        </td>
+    </ng-container> 
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr [id]="row.model_id" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    
+  </table>
+  <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>

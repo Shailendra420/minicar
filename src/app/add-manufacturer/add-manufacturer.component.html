@@ -1,0 +1,39 @@
+<div class="container center">
+  <!-- <p *ngIf="success">{{ success }}</p> -->
+  <mat-card class="example-card">
+    <mat-card-header>
+      <!-- <div mat-card-avatar class="example-header-image"></div> -->
+      <mat-card-title>Add Manufacturer</mat-card-title>
+      <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+    </mat-card-header>
+    <form #f="ngForm" (ngSubmit)="addManufacturer(f)">
+      <div class="row">
+        <div id="m_data" class="col-md-12">
+          <div class="form-group">
+            <label for="manufacturer">Manufacturer</label>
+            <input 
+              type="text"
+              id="manufacturer"
+              class="form-control"
+              ngModel
+              name="manufacturer"
+              required>
+          </div>
+        </div>
+      </div>  
+        <!-- <div>
+          <button [disabled]="!f.valid" class="btn btn-primary" type="submit">Submit</button>
+        </div> -->
+      
+    
+        
+    <mat-card-actions>
+      <button mat-button [disabled]="!f.valid" color="primary" type="submit">Submit</button>
+      <!-- <button mat-button>LIKE</button>
+      <button mat-button>SHARE</button> -->
+    </mat-card-actions>
+  
+  </form>  
+  </mat-card>
+</div>
+
