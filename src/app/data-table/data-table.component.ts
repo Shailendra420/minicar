@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { CarInventoryService } from '../car-inventory/car-inventory.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { CarModel } from '../shared/car-model.model';
 
 export interface PeriodicElement {
   manufacturer: string;
@@ -17,68 +18,46 @@ export interface PeriodicElement {
 })
 export class DataTableComponent implements OnInit {
   displayedColumns = ['position', 'manufacturer', 'model', 'count', 'actions'];
-  dataSource: Object;
+  dataSource: CarModel[];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   error;
-  success;
-  inv = [];
   rowRef;
   constructor(private carInventoryService: CarInventoryService) {}
 
   ngOnInit() {
     this.carInventoryService.getReslts()
-    .subscribe((data) => this.dataSource = data);
+    .subscribe((data) => {
+      // console.log(this.dataSource);
+      // console.log(data);
+      this.dataSource = data;
+    });
   }
 
   sellOneCar(i, paraRef) {
     
     this.error = '';
-    this.success = '';
-    // console.log(paraRef.currentTarget.parentElement.parentElement);
-    // debugger;
-  this.rowRef = paraRef.currentTarget.parentElement.parentElement;
+    
+    this.rowRef = paraRef.currentTarget.parentElement.parentElement;
     this.carInventoryService.updateModelCount(this.rowRef.id)
     .subscribe(
       (res) => {
-        // Update the list of cars
-        // this.modelData = res;
-        // console.log(this.modelData);
-
-        // Inform the user
-        this.success = 'Updated model count successfully';
+        // this.success = 'Updated model count successfully';
         this.carInventoryService.getReslts()
         .subscribe(data => {
-          // const data = this.dataSource.data;
-          // data.splice((this.paginator.pageIndex * this.paginator.pageSize) + index, 1);
+          
+          this.dataSource = [];
           this.dataSource = data;
+          
+          const m_data = this.dataSource;
           this.dataSource.forEach(element => {
-            const data = this.dataSource;
             if(element.model_id === this.rowRef.id && element.count < 1) {
-              data.splice((this.paginator.pageIndex * this.paginator.pageSize) + i, 1);
+              m_data.splice((this.paginator.pageIndex * this.paginator.pageSize) + i, 1);
             }
-            // console.log(element.model_id);
           });
-          // this.dataSource = data;
         });
-        // Reset the form
-        // form.reset();
       },
       (err) => this.error = err
     ); 
-    // console.log(this.dataSource);
-    // debugger;
-    
-
-    // console.log(this.inv);
-    
-    // debugger;
-    
+   
   }
-  // removeAt(index: number) {
-  //   const data = this.dataSource;
-  //   data.splice((this.paginator.pageIndex * this.paginator.pageSize) + index, 1);
-
-  //   this.dataSource.data = data;
-  // }
-
 }

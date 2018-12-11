@@ -1,9 +1,12 @@
-<div class="container center">
-  <!-- <p *ngIf="success">{{ success }}</p> -->
+<div class="container center style">
+  <p #disappear *ngIf="success; else err" class="success">{{ success }}</p>
+  <ng-template #err>
+    <p class="error">{{ error }}</p>
+  </ng-template>
   <mat-card class="example-card">
     <mat-card-header>
       <!-- <div mat-card-avatar class="example-header-image"></div> -->
-      <mat-card-title>Add Manufacturer</mat-card-title>
+      <mat-card-title>ADD MANUFACTURER</mat-card-title>
       <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
     </mat-card-header>
     <form #f="ngForm" (ngSubmit)="addManufacturer(f)">
@@ -20,7 +23,7 @@
               required>
           </div>
         </div>
-      </div>  
+      </div>   
         <!-- <div>
           <button [disabled]="!f.valid" class="btn btn-primary" type="submit">Submit</button>
         </div> -->

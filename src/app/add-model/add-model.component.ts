@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CarInventoryService } from '../car-inventory/car-inventory.service';
 import { NgForm } from '@angular/forms';
 
@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./add-model.component.css']
 })
 export class AddModelComponent implements OnInit {
+  @ViewChild('disappear') flashMessage: ElementRef;
   results: Object;
   error;
   success;
@@ -32,11 +33,19 @@ export class AddModelComponent implements OnInit {
 
         // Inform the user
         this.success = 'Created successfully';
+        setTimeout(() => {
+          this.success = "";
+        },3000);
 
         // Reset the form
         form.reset();
       },
-      (err) => this.error = err
+      (err) => {
+        this.error = err;
+        setTimeout(() => {
+          this.error = "";
+        },3000);
+      }
     );
   }
 }

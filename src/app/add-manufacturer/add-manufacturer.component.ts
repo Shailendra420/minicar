@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { CarInventoryService } from '../car-inventory/car-inventory.service';
 
@@ -8,6 +8,7 @@ import { CarInventoryService } from '../car-inventory/car-inventory.service';
   styleUrls: ['./add-manufacturer.component.css']
 })
 export class AddManufacturerComponent implements OnInit {
+  @ViewChild('disappear') flashMessage: ElementRef;
   error;
   success;
   constructor(private carInventoryS: CarInventoryService) { }
@@ -21,19 +22,25 @@ export class AddManufacturerComponent implements OnInit {
     this.carInventoryS.insertManufacturer(form)
     .subscribe(
       (res) => {
-        // Update the list of cars
+        // Update the list of cars 
         // this.cars = res;
-
+        console.log(res);
         // Inform the user
         this.success = 'Created successfully';
+        setTimeout(() => {
+          this.success = "";
+        },3000);
 
         // Reset the form
         form.reset();
       },
-      (err) => this.error = err
+      (err) => {
+        this.error = err;
+        setTimeout(() => {
+          this.error = "";
+        },3000);
+      }
     );
-    // setTimeout(() => {
-    //   this.success = null;
-    // },3000);
+    
   }
 }

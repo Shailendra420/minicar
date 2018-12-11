@@ -1,26 +1,51 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { CarModel } from '../shared/car-model.model';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarInventoryService {
   manufac;
+  public carModel: CarModel[] = [];
+  public model_data;
+  // model = new Subject<CarModel[]>();
 
   constructor(private http: HttpClient) { }
 
   configUrl = 'http://localhost/miniCarInventory/php/api';
 
   getReslts() {
-    return this.http.get(`${this.configUrl}/model/read.php`);
+    return this.http.get(`${this.configUrl}/model/read.php`)
+                      .pipe(map(items => {
+                        this.model_data = items;
+                        this.carModel = [];
+                        for (const item of this.model_data) {
+                          // `item` is the array element, **not** the index
+                          if(item.count > 0) {
+                            this.carModel.push((new CarModel(
+                              item.model_name,
+                              item.manufacturer_name,
+                              item.count,
+                              item.model_id
+                            )));
+                          }
+                          // console.log(item.model_name)
+                        }
+                        return this.carModel.slice();
+                      }))
+    // return this.carModel.slice();
   }
-
+  // returnModelData() {
+  //   return this.carModel.slice();
+  // }
   getManufacturers() {
     return this.http.get(`${this.configUrl}/manufacturer/read.php`);
   }
 
-  insertManufacturer(formData): Observable<Object> {
+  insertManufacturer(formData) {
     return this.http.post(`${this.configUrl}/manufacturer/insert.php`, { data: formData.value.manufacturer });
   }
 

@@ -1,5 +1,8 @@
 <div class="container">
-    <!-- <p *ngIf="success">{{ success }}</p> -->
+  <p #disappear *ngIf="success; else err" class="success">{{ success }}</p>
+  <ng-template #err>
+    <p class="error">{{ error }}</p>
+  </ng-template>
   <mat-card class="example-card">
       <mat-card-header>
         <!-- <div mat-card-avatar class="example-header-image"></div> -->
